@@ -1,0 +1,37 @@
+db name = PetPlace
+
+CREATE TABLE `tb_admin` (
+  `id` bigint(11) unsigned NOT NULL AUTO_INCREMENT,
+  `admin_id` varchar(20) NOT NULL DEFAULT '',
+  `admin_pass` varchar(120) NOT NULL DEFAULT '',
+  `admin_name` varchar(30) NOT NULL DEFAULT '',
+  `create_at` datetime NOT NULL,
+  `update_at` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `admin_id` (`admin_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE `tb_image` (
+  `id` bigint(11) unsigned NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE `tb_place` (
+  `id` bigint(11) unsigned NOT NULL AUTO_INCREMENT,
+  `kind` varchar(20) NOT NULL DEFAULT '',
+  `title` varchar(50) NOT NULL DEFAULT '',
+  `desc` varchar(250) DEFAULT NULL,
+  `link` varchar(2000) NOT NULL,
+  `addr` varchar(250) NOT NULL DEFAULT '',
+  `road_addr` varchar(250) DEFAULT '',
+  `tel` varchar(20) DEFAULT '',
+  `office_hours` varchar(20) DEFAULT '',
+  `lat` double NOT NULL,
+  `lng` double NOT NULL,
+  `cover_image_id` bigint(11) DEFAULT '0',
+  `create_at` datetime NOT NULL,
+  `update_at` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3968 DEFAULT CHARSET=utf8;
