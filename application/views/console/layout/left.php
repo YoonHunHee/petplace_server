@@ -43,7 +43,7 @@
                 <li><a><i class="fa fa-map-marker"></i> Places <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu" style="display: none">
                         <li><a href="/console/place/lists">Place</a></li>
-                        <li><a href="/general_elements.html">Course</a></li>
+                        <li><a href="/console/course/lists">Course</a></li>
                     </ul>
                 </li>
                 <li><a><i class="fa fa-book"></i> Storys <span class="fa fa-chevron-down"></span></a>

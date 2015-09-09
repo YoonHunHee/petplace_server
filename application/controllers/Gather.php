@@ -5,11 +5,11 @@ class Gather extends CI_Controller {
 
 	public $url = 'http://openapi.naver.com/search';
 	public $mapUrl = 'http://openapi.map.naver.com/api/geocode';
-	public $daumApi = 'https://apis.daum.net/local/geo/addr2coord';
-
 	public $key = '41c3947d6a5d36f4451e2d9311d6eff5';
 	public $mapKey = '29c5ee8706475ddafdb53c782403e193';
-	public $daumKey = 'd86641dfd0563f3fd48a194de27462e9';
+
+	public $daumApi = $this->config->item('daum_api');
+	public $daumKey = $this->config->item('daum_key');
 
 	public function local_hostipal($query = '충청북도동물병원')
 	{

@@ -3,8 +3,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Common extends CI_Controller {
 
-	public $daumApi = 'https://apis.daum.net/local/geo/addr2coord';
-	public $daumKey = 'd86641dfd0563f3fd48a194de27462e9';
+	public $daumApi;
+	public $daumKey;
+
+	function __construct()
+	{
+		parent::__construct();
+
+		$this->daumApi = $this->config->item('daum_api');
+		$this->daumKey = $this->config->item('daum_key');
+	}
 
 	public function get_menu_status()
 	{

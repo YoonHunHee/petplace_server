@@ -515,3 +515,13 @@ $config['rewrite_short_tags'] = FALSE;
 | Array:		array('10.0.1.200', '192.168.5.0/24')
 */
 $config['proxy_ips'] = '';
+
+/*
+|--------------------------------------------------------------------------
+| Custom Config
+|--------------------------------------------------------------------------
+*/
+
+$config['default_page_size'] = 10;
+$config['daum_api'] = 'https://apis.daum.net/local/geo/addr2coord';
+$config['daum_key'] = 'd86641dfd0563f3fd48a194de27462e9';

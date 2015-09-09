@@ -3,17 +3,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Place extends Console_Controller {
 
-	public $page_size = 10;
-
-	public $daumApi = 'https://apis.daum.net/local/geo/addr2coord';
-	public $daumKey = 'd86641dfd0563f3fd48a194de27462e9';
+	public $page_size;
+	public $daumApi;
+	public $daumKey;
 
 	function __construct()
 	{
-  		parent::__construct();
-  		$this->load->model('place_model');
-  		$this->load->library('form_validation');
-  	}
+		parent::__construct();
+		$this->load->model('place_model');
+		$this->load->library('form_validation');
+
+		$this->page_size = $this->config->item('default_page_size');
+		$this->daumApi = $this->config->item('daum_api');
+		$this->daumKey = $this->config->item('daum_key');
+	}
 
 	public function lists($start = 0)
 	{
