@@ -105,7 +105,9 @@ class Place extends Console_Controller {
 			$insert['road_addr'] = $this->input->post('road_addr');
 			$insert['desc'] = $this->input->post('desc');
 			$insert['create_at'] = date('Y-m-d H:i:s', time());
+			$insert['create_id'] = $this->session->userdata('console_id');
 			$insert['update_at'] = date('Y-m-d H:i:s', time());
+			$insert['update_id'] = $this->session->userdata('console_id');
 			$latlng = $this->_addressTolatlng($insert['addr']);
 
 			if(!empty($latlng)) {
@@ -141,6 +143,7 @@ class Place extends Console_Controller {
 			$update['road_addr'] = $this->input->post('road_addr');
 			$update['desc'] = $this->input->post('desc');
 			$update['update_at'] = date('Y-m-d H:i:s', time());
+			$update['update_id'] = $this->session->userdata('console_id');
 			$latlng = $this->_addressTolatlng($update['addr']);
 
 			if(!empty($latlng)) {

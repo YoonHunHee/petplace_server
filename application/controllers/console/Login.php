@@ -9,7 +9,7 @@ class Login extends CI_Controller {
 		$this->load->model('admin_model');
 
 		$this->load->library('encrypt');
-	  $this->load->library('form_validation');
+	    $this->load->library('form_validation');
 	}
 
 	public function index()

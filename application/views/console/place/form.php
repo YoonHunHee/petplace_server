@@ -63,33 +63,33 @@
 	                    </div>
 	                </div>
 	                <div class="item form-group">
-	                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="admin_name">Title <span class="required">*</span></label>
+	                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="title">Title <span class="required">*</span></label>
 	                    <div class="col-md-6 col-sm-6 col-xs-12">
 	                        <input type="text" id="title" name="title" required="required" class="form-control col-md-7 col-xs-12" value="<?=(isset($row)) ? $row->title : ''?>"/>
 	                    </div>
 	                </div>
 	                <div class="item form-group">
-	                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="admin_name">Addr <span class="required">*</span></label>
+	                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="addr">Addr <span class="required">*</span></label>
 	                    <div class="col-md-6 col-sm-6 col-xs-12">
 	                        <input type="text" id="addr" name="addr" required="required" class="form-control col-md-7 col-xs-12" value="<?=(isset($row)) ? $row->addr : ''?>"/>
 	                    </div>
 	                    <a href="#" class="btn btn-info marker-btn addr"><- 위치설정</a>
 	                </div>
 	                <div class="item form-group">
-	                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="admin_name">Road Addr</label>
+	                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="road_addr">Road Addr</label>
 	                    <div class="col-md-6 col-sm-6 col-xs-12">
 	                        <input type="text" id="road_addr" name="road_addr" class="form-control col-md-7 col-xs-12" value="<?=(isset($row)) ? $row->road_addr : ''?>"/>
 	                    </div>
 	                    <a href="#" class="btn btn-info marker-btn road_addr"><- 위치설정</a>
 	                </div>
 	                <div class="item form-group">
-	                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="admin_name">Tel </label>
+	                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="tel">Tel </label>
 	                    <div class="col-md-6 col-sm-6 col-xs-12">
 	                        <input type="text" id="tel" name="tel" class="form-control col-md-7 col-xs-12" value="<?=(isset($row)) ? $row->tel : ''?>"/>
 	                    </div>
 	                </div>
 	                <div class="item form-group">
-	                    <label for="password" class="control-label col-md-3">간략설명</label>
+	                    <label for="desc" class="control-label col-md-3">간략설명</label>
 	                    <div class="col-md-6 col-sm-6 col-xs-12">
 	                    	<textarea name="desc" id="desc" class="form-control col-md-7 col-xs-12"><?=(isset($row)) ? $row->desc : ''?></textarea>
 	                    </div>
