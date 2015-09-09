@@ -35,3 +35,13 @@ CREATE TABLE `tb_place` (
   `update_at` datetime NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3968 DEFAULT CHARSET=utf8;
+
+CREATE TABLE `tb_course` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `kind` varchar(20) NOT NULL DEFAULT 'course',
+  `title` varchar(100) NOT NULL DEFAULT '',
+  `desc` varchar(250) DEFAULT NULL,
+  `st_pt` geometry NOT NULL,
+  `way_pt` geometrycollection DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
