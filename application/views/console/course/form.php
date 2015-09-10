@@ -125,17 +125,17 @@
                             image: arriveImage // 도착 마커이미지를 설정합니다
                         });
 
-// 도착 마커에 dragstart 이벤트를 등록합니다
-daum.maps.event.addListener(arriveMarker, 'dragstart', function() {
-    // 도착 마커의 드래그가 시작될 때 마커 이미지를 변경합니다
-    arriveMarker.setImage(arriveDragImage);
-});
+                        // 도착 마커에 dragstart 이벤트를 등록합니다
+                        daum.maps.event.addListener(arriveMarker, 'dragstart', function() {
+                            // 도착 마커의 드래그가 시작될 때 마커 이미지를 변경합니다
+                            arriveMarker.setImage(arriveDragImage);
+                        });
 
-// 도착 마커에 dragend 이벤트를 등록합니다
-daum.maps.event.addListener(arriveMarker, 'dragend', function() {
-     // 도착 마커의 드래그가 종료될 때 마커 이미지를 원래 이미지로 변경합니다
-    arriveMarker.setImage(arriveImage);  
-});
+                        // 도착 마커에 dragend 이벤트를 등록합니다
+                        daum.maps.event.addListener(arriveMarker, 'dragend', function() {
+                             // 도착 마커의 드래그가 종료될 때 마커 이미지를 원래 이미지로 변경합니다
+                            arriveMarker.setImage(arriveImage);  
+                        });
                     </script>
                     <?php } ?>
 
