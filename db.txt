@@ -44,11 +44,13 @@ CREATE TABLE `tb_course` (
   `title` varchar(100) NOT NULL DEFAULT '',
   `desc` varchar(250) DEFAULT NULL,
   `st_pt` geometry NOT NULL,
-  `end_pt` geometry NOT NULL,
+  `end_pt` geometry DEFAULT NULL,
   `way_pt` geometrycollection DEFAULT NULL,
+  `distance` int(11) DEFAULT NULL,
+  `walk_time` int(11) DEFAULT NULL,
   `create_at` datetime NOT NULL,
   `create_id` varchar(20) NOT NULL,
   `update_at` datetime NOT NULL,
   `update_id` varchar(20) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
