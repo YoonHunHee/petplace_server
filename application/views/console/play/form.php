@@ -18,7 +18,7 @@
             </div>
             <div class="x_content">
 
-                <form class="form-horizontal form-label-left" novalidate method="post" action="/console/course/action">
+                <form class="form-horizontal form-label-left" novalidate method="post" action="/console/play/action">
                 <input type="hidden" name="mode" value="<?=(isset($row)) ? 'edit' : 'regist'?>"/>
                 <input type="hidden" name="id" value="<?=(isset($row)) ? $row->id : ''?>"/>
                
@@ -184,7 +184,7 @@
             var path = clickLine.getPath();
         
             // 선을 구성하는 좌표의 개수가 2개 이상이면
-            if (path.length > 1) {
+            if (path.length > 0) {
 
                 // 마지막 클릭 지점에 대한 거리 정보 커스텀 오버레이를 지웁니다
                 if (dots[dots.length-1].distance) {
@@ -220,6 +220,8 @@
                 dots[dots.length-1].circle = circleOverlay;
 
                 endPosition(position);
+
+                deleteDistnce();
                  
             } else {
 

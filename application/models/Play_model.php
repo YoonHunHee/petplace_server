@@ -1,7 +1,7 @@
 <?php 
-class Course_model extends CI_Model {
+class Play_model extends CI_Model {
 
-    public $tableName = 'tb_course';
+    public $tableName = 'tb_play';
 
     public function __construct()
     {
@@ -12,7 +12,7 @@ class Course_model extends CI_Model {
     public function total_count($where = '')
     {
         $this->db->where($where);
-        return $this->db->count_all($this->tableName);
+        return $this->db->count_all_results($this->tableName);
     }
 
     public function lists($where = '', $start = 0, $limit = 0)

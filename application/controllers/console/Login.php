@@ -15,7 +15,7 @@ class Login extends CI_Controller {
 	public function index()
 	{
 		if($this->session->userdata('logged_in'))
-  			redirect('/console/main');
+  		  redirect('/console/main');
   		
 		$this->load->view('console/login');
 	}
@@ -37,10 +37,10 @@ class Login extends CI_Controller {
     		if($pass == $this->encrypt->decode($row->admin_pass))
     		{
     			$admin = array(
-				        'console_id'   => $row->admin_id,
-				        'console_name' => $row->admin_name,
-				        'logged_in' => TRUE,
-				        'toggle_is' => FALSE
+			        'console_id'   => $row->admin_id,
+			        'console_name' => $row->admin_name,
+			        'logged_in' => TRUE,
+			        'toggle_is' => FALSE
 				);
 
 				$this->session->set_userdata($admin);

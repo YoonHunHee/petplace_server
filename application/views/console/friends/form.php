@@ -2,12 +2,12 @@
 	<div class="col-md-12 col-sm-6 col-xs-12">
         <div class="x_panel">
             <div class="x_title">
-                <h2>Place Form</h2>
+                <h2>Friends Form</h2>
                 <div class="clearfix"></div>
             </div>
             <div class="x_content">
 
-            	<form class="form-horizontal form-label-left" novalidate method="post" action="/console/place/action">
+            	<form class="form-horizontal form-label-left" novalidate method="post" action="/console/friends/action">
 				<input type="hidden" name="mode" value="<?=(isset($row)) ? 'edit' : 'regist'?>"/>
 				<input type="hidden" name="id" value="<?=(isset($row)) ? $row->id : ''?>"/>
 					

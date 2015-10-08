@@ -1,6 +1,6 @@
 <div class="left_col scroll-view">
     <div class="navbar nav_title" style="border: 0;">
-        <a href="index.html" class="site_title"><i class="fa fa-paw"></i> <span>PET PLACE</span></a>
+        <a href="index.html" class="site_title"><i class="fa fa-paw"></i> <span>withMe</span></a>
     </div>
     <div class="clearfix"></div>
 
@@ -34,16 +34,20 @@
                 </li>
                 <li><a><i class="fa fa-users"></i> Users <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu" style="display: none">
-                        <li><a href="/form.html">Active Users</a>
+                        <li><a href="/console/user/lists">Active Users</a>
                         </li>
                         <li><a href="/form_advanced.html">Active Token</a>
                         </li>
                     </ul>
                 </li>
-                <li><a><i class="fa fa-map-marker"></i> Places <span class="fa fa-chevron-down"></span></a>
+                <li><a><i class="fa fa-map-marker"></i> Friends <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu" style="display: none">
-                        <li><a href="/console/place/lists">Place</a></li>
-                        <li><a href="/console/course/lists">Course</a></li>
+                        <li><a href="/console/friends/lists">Friends</a></li>
+                    </ul>
+                </li>
+                <li><a><i class="fa fa-map-marker"></i> Play <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu" style="display: none">
+                        <li><a href="/console/play/lists">Play</a></li>
                     </ul>
                 </li>
                 <li><a><i class="fa fa-book"></i> Storys <span class="fa fa-chevron-down"></span></a>

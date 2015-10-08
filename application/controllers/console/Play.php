@@ -1,14 +1,14 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Course extends Console_Controller {
+class Play extends Console_Controller {
 
     public $page_size;
 
     function __construct()
     {
         parent::__construct();
-        $this->load->model('course_model');
+        $this->load->model('play_model');
         $this->load->library('form_validation');
 
         $this->page_size = $this->config->item('default_page_size');
@@ -17,17 +17,17 @@ class Course extends Console_Controller {
     public function lists($start = 0)
     {
         $where = 'id is not null';
-        $total_count = $this->course_model->total_count($where);
+        $total_count = $this->play_model->total_count($where);
 
-        $this->data['list'] = $this->course_model->lists($where, $start, $this->page_size);
+        $this->data['list'] = $this->play_model->lists($where, $start, $this->page_size);
 
-        $config['base_url'] = '/console/course/lists';
+        $config['base_url'] = '/console/play/lists';
         $config['total_rows'] = $total_count;
         $config['per_page'] = $this->page_size; 
         $this->pagination->initialize($config); 
         $this->data['paging'] = $this->pagination->create_links();
 
-        $this->body = 'console/course/lists';
+        $this->body = 'console/play/lists';
         $this->layout();
     }
 
@@ -36,11 +36,11 @@ class Course extends Console_Controller {
         $this->load->helper('form');
 
         if(!empty($id)) {
-            $row = $this->course_model->get($id);
+            $row = $this->play_model->get($id);
             $this->data['row'] = $row;
         }
 
-        $this->body = 'console/course/form';
+        $this->body = 'console/play/form';
         $this->layout();
     }
 
@@ -49,9 +49,9 @@ class Course extends Console_Controller {
         $this->load->helper('download');
 
         $where = 'id is not null';
-        $data['courses'] = $this->course_model->lists($where);
+        $data['play'] = $this->play_model->lists($where);
 
-        force_download('courses.json', json_encode($data));
+        force_download('play.json', json_encode($data));
         //$this->output->set_content_type('application/json')->set_output(json_encode($data));
     }
 
@@ -74,10 +74,10 @@ class Course extends Console_Controller {
         }
         else
         {
-            $result = $this->course_model->delete($this->input->post('id'));
+            $result = $this->play_model->delete($this->input->post('id'));
 
             if($result) {
-                redirect('/console/course/lists');
+                redirect('/console/play/lists');
             }
         }
     }
@@ -109,10 +109,10 @@ class Course extends Console_Controller {
             $insert['update_at'] = date('Y-m-d H:i:s', time());
             $insert['update_id'] = $this->session->userdata('console_id');
 
-            $result = $this->course_model->insert($insert);
+            $result = $this->play_model->insert($insert);
 
             if($result)
-                redirect('/console/course/lists');
+                redirect('/console/play/lists');
         }
     }
 
@@ -143,10 +143,10 @@ class Course extends Console_Controller {
             $update['update_id'] = $this->session->userdata('console_id');
 
             $where = array('id'=>$this->input->post('id'));
-            $result = $this->course_model->update($where, $update);
+            $result = $this->play_model->update($where, $update);
 
             if($result)
-                redirect('/console/course/form/' . $this->input->post('id'));
+                redirect('/console/play/form/' . $this->input->post('id'));
         }
     }
 

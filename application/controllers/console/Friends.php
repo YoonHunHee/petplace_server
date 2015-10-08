@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Place extends Console_Controller {
+class Friends extends Console_Controller {
 
 	public $page_size;
 	public $daumApi;
@@ -10,7 +10,7 @@ class Place extends Console_Controller {
 	function __construct()
 	{
 		parent::__construct();
-		$this->load->model('place_model');
+		$this->load->model('friends_model');
 		$this->load->library('form_validation');
 
 		$this->page_size = $this->config->item('default_page_size');
@@ -21,17 +21,17 @@ class Place extends Console_Controller {
 	public function lists($start = 0)
 	{
 		$where = 'lat is not null and lng is not null';
-		$total_count = $this->place_model->total_count($where);
+		$total_count = $this->friends_model->total_count($where);
 
-		$this->data['list'] = $this->place_model->lists($where, $start, $this->page_size);
+		$this->data['list'] = $this->friends_model->lists($where, $start, $this->page_size);
 
-		$config['base_url'] = '/console/place/lists';
+		$config['base_url'] = '/console/friends/lists';
 		$config['total_rows'] = $total_count;
 		$config['per_page'] = $this->page_size; 
 		$this->pagination->initialize($config); 
 		$this->data['paging'] = $this->pagination->create_links();
 		
-		$this->body = 'console/place/lists';
+		$this->body = 'console/friends/lists';
 		$this->layout();
 	}
 
@@ -40,11 +40,11 @@ class Place extends Console_Controller {
 		$this->load->helper('form');
 
 		if(!empty($id)) {
-			$row = $this->place_model->get($id);
+			$row = $this->friends_model->get($id);
 			$this->data['row'] = $row;
 		}
 
-		$this->body = 'console/place/form';
+		$this->body = 'console/friends/form';
 		$this->layout();
 	}
 
@@ -52,10 +52,10 @@ class Place extends Console_Controller {
 	{
 		$this->load->helper('download');
 
-		$rows = $this->place_model->lists('lat is not null and lan is not null');
-		$data['places'] = $rows->result_array();
+		$rows = $this->friends_model->lists('lat is not null and lan is not null');
+		$data['friends'] = $rows->result_array();
 
-		force_download('places.json', json_encode($data));
+		force_download('friends.json', json_encode($data));
 		//$this->output->set_content_type('application/json')->set_output(json_encode($data));
 	}
 
@@ -73,31 +73,31 @@ class Place extends Console_Controller {
 		$this->form_validation->set_rules('id', '정상적인 접근이 아닙니다.', 'required');
 		
 		if($this->form_validation->run() === false)
-	    {
-	    	echo 'form error : ' . validation_errors(); 
-    	}
-    	else
-    	{
-    		$result = $this->place_model->delete($this->input->post('id'));
+    {
+    	echo 'form error : ' . validation_errors(); 
+  	}
+  	else
+  	{
+  		$result = $this->friends_model->delete($this->input->post('id'));
 
-    		if($result) {
-    			redirect('/console/place/lists');
-    		}
-    	}
+  		if($result) {
+  			redirect('/console/friends/lists');
+  		}
+  	}
 	}
 
 	function _regist()
 	{
 		$this->form_validation->set_rules('kind', '구분을 선택하세요', 'required');
-	    $this->form_validation->set_rules('title', '제목을 입력하세요', 'required');
-	    $this->form_validation->set_rules('addr', '주소를 입력하세요', 'required');
+    $this->form_validation->set_rules('title', '제목을 입력하세요', 'required');
+    $this->form_validation->set_rules('addr', '주소를 입력하세요', 'required');
 
-	    if($this->form_validation->run() === false)
-	    {
-	    	echo 'form error : ' . validation_errors(); 
-    	}
-    	else
-    	{
+    if($this->form_validation->run() === false)
+    {
+    	echo 'form error : ' . validation_errors(); 
+  	}
+  	else
+  	{
 			$insert['kind'] = $this->input->post('kind');
 			$insert['title'] = $this->input->post('title');
 			$insert['tel'] = $this->input->post('tel');
@@ -116,10 +116,10 @@ class Place extends Console_Controller {
 				$insert['lng'] = $temp[1];
 			}
 				
-			$result = $this->place_model->insert($insert);
+			$result = $this->friends_model->insert($insert);
 
-    		if($result)
-    			redirect('/console/place/lists');
+  		if($result)
+  			redirect('/console/friends/lists');
 		}
 	}
 
@@ -127,16 +127,16 @@ class Place extends Console_Controller {
 	{
 		$this->form_validation->set_rules('id', '필수값이 존재하지 않습니다', 'required');
 		$this->form_validation->set_rules('kind', '구분을 선택하세요', 'required');
-	    $this->form_validation->set_rules('title', '제목을 입력하세요', 'required');
-	    $this->form_validation->set_rules('addr', '주소를 입력하세요', 'required');
+	  $this->form_validation->set_rules('title', '제목을 입력하세요', 'required');
+	  $this->form_validation->set_rules('addr', '주소를 입력하세요', 'required');
 
 		if($this->form_validation->run() === false)
-	    {
-	    	echo 'form error : ' . validation_errors(); 
-    	}
-    	else
-    	{
-    		$update['kind'] = $this->input->post('kind');
+	  {
+	  	echo 'form error : ' . validation_errors(); 
+		}
+		else
+		{
+	  	$update['kind'] = $this->input->post('kind');
 			$update['title'] = $this->input->post('title');
 			$update['tel'] = $this->input->post('tel');
 			$update['addr'] = $this->input->post('addr');
@@ -152,12 +152,12 @@ class Place extends Console_Controller {
 				$update['lng'] = $temp[1];
 			}
 			$where = array('id'=>$this->input->post('id'));
-    		$result = $this->place_model->update($where, $update);
+			$result = $this->friends_model->update($where, $update);
 
-    		if($result) {
-    			redirect('/console/place/form/'.$this->input->post('id'));
-    		}
-    	}
+			if($result) {
+				redirect('/console/friends/form/'.$this->input->post('id'));
+			}
+  	}
 	}
 
 	function _addressTolatlng($addr = '') {

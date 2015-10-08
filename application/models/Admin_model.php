@@ -12,7 +12,7 @@ class Admin_model extends CI_Model {
     public function total_count($where = '')
     {
         $this->db->where($where);
-        return $this->db->count_all($this->tableName);
+        return $this->db->count_all_results($this->tableName);
     }
 
     public function lists($where = '', $start = 0, $limit = 0)
@@ -44,7 +44,7 @@ class Admin_model extends CI_Model {
 
     public function insert($params) 
     {
-    	return $this->db->insert('tb_admin', $params);
+    	return $this->db->insert($this->tableName, $params);
     }
 
     public function update()

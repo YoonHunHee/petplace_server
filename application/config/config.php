@@ -525,3 +525,6 @@ $config['proxy_ips'] = '';
 $config['default_page_size'] = 10;
 $config['daum_api'] = 'https://apis.daum.net/local/geo/addr2coord';
 $config['daum_key'] = 'd86641dfd0563f3fd48a194de27462e9';
+
+$config['API_URL'] = '/api/v1';
+
