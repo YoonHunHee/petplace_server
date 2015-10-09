@@ -1,9 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class User extends CI_Controller {
-
-    public $result;
+class User extends API_Controller {
 
     function __construct()
     {
@@ -12,69 +10,72 @@ class User extends CI_Controller {
         $this->load->model('user_model');
         $this->load->library('encrypt');
 
-        if(empty($this->session->userdata('access_token')))
-        {
-            redirect($this->config->item('API_URL') . '/error/message/300');
-        }
     }
 
     public function regist()
     {
-        if(!is_array($this->input->post()) || sizeof($this->input->post()) == 0) {
-            redirect($this->config->item('API_URL') . '/error/message/500');
-        }
+        if($this->checkAccessToken())
+        {
+            if($this->checkPost())
+            {
+                $email = $this->input->post('email');
+                $nick_name = $this->input->post('nick_name');
+                $password = $this->input->post('password');
+                $password_confirm = $this->input->post('password_confirm');
 
-        $email = $this->input->post('email');
-        $nick_name = $this->input->post('nick_name');
-        $password = $this->input->post('password');
-        $password_confirm = $this->input->post('password_confirm');
+                // check parameter
+                if(!isset($email) || empty($email)) {
+                    $this->json(501, '이메일을 입력해주세요.');
+                    return;
+                }
 
-        if(!isset($email) || empty($email)) {
-            redirect($this->config->item('API_URL') . '/error/message/500');
-        }
+                if(!isset($nick_name) || empty($nick_name)) {
+                    $this->json(501, '닉네임을 입력해주세요.');
+                    return;
+                }
 
-        if(!isset($nick_name) || empty($nick_name)) {
-            redirect($this->config->item('API_URL') . '/error/message/500');
-        }
+                if(!isset($password) || empty($password)) {
+                    $this->json(501, '비밀번호를 입력해주세요.');
+                    return;
+                }
 
-        if(!isset($password) || empty($password)) {
-            redirect($this->config->item('API_URL') . '/error/message/500');
-        }
+                if(!isset($password_confirm) || empty($password_confirm)) {
+                    $this->json(501, '비밀번호확인을 입력해주세요.');
+                    return;
+                }
 
-        if(!isset($password_confirm) || empty($password_confirm)) {
-            redirect($this->config->item('API_URL') . '/error/message/500');
-        }
+                if($password != $password_confirm) {
+                    $this->json(501, '비밀번호가 일치하지 않습니다.');
+                    return;
+                }
 
-        if($password != $password_confirm) {
-            redirect($this->config->item('API_URL') . '/error/message/501');
-        }
+                if($this->user_model->is_check($email) > 0) {
+                    $this->json(301, '이미 등록된 이메일주소입니다.');
+                    return;
+                }
 
-        if($this->user_model->is_check($email) > 0) {
-            redirect($this->config->item('API_URL') . '/error/message/302');
-        }
+                $insert['email'] = $email;
+                $insert['nick_name'] = $nick_name;
+                $insert['password'] = $this->encrypt->encode($password);
+                $insert['create_at'] = date('Y-m-d H:i:s', time());
+                $insert['update_at'] = date('Y-m-d H:i:s', time());
+                $result = $this->user_model->insert($insert);
 
-        $insert['email'] = $email;
-        $insert['nick_name'] = $nick_name;
-        $insert['password'] = $this->encrypt->encode($password);
-        $insert['create_at'] = date('Y-m-d H:i:s', time());
-        $insert['update_at'] = date('Y-m-d H:i:s', time());
-        $result = $this->user_model->insert($insert);
+                if($result) {
+                    //session create
+                    $user = array(
+                        'user_email'        => $email,
+                        'user_nick_name'    => $nick_name
+                    );
 
-        if($result) {
+                    $this->session->set_userdata($user);
 
-            //session create
-            $user = array(
-                'user_email'        => $email,
-                'user_nick_name'    => $nick_name
-            );
-
-            $this->session->set_userdata($user);
-
-            $this->result = array('code' => 200, 'message' => 'success');
-            $this->output->set_content_type('application/json')->set_output(json_encode($this->result));
-            return;
-        } else {
-            redirect($this->config->item('API_URL') . '/error/message/900');
+                    $this->json(200, 'success');
+                    return;
+                } else {
+                    $this->json(900, '죄송합니다. 데이터를 처리할 수 없습니다.');
+                }
+            }
         }
     }
   

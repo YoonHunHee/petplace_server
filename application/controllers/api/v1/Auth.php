@@ -1,9 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Auth extends CI_Controller {
-
-    public $result;
+class Auth extends API_Controller {
 
     function __construct()
     {
@@ -11,130 +9,76 @@ class Auth extends CI_Controller {
 
         $this->load->model('user_model');
         $this->load->library('encrypt');
-        $this->load->helper('string');
     }
 
-    /*
-        Access Token 발급
-    */
+    /**
+     * [authorize description]
+     * @return [type] [description]
+     */
     public function authorize()
     {
-        /*if(!is_array($this->input->post()) || sizeof($this->input->post()) == 0) {
-            redirect($this->config->item('API_URL') . '/error/message/500');
-        }*/
+        if($this->checkAccessToken())
+        {
+            if($this->checkPost())
+            {
+                // set parameters
+                $email = $this->input->post('email');
+                $password = $this->input->post('password');
 
-        $secret_key = $this->input->post('secret_key');
-        $access_token = random_string('alnum', 32);
+                // check parameter
+                if(!isset($email) || empty($email)) {
+                    $this->json(501, '이메일을 입력해주세요.');
+                    $this->_userSessionReset();
+                    return;
+                }
 
-        $token = array('access_token' => $access_token);
+                if(!isset($password) || empty($password)) {
+                    $this->json(501, '비밀번호를 입력해주세요.');
+                    $this->_userSessionReset();
+                    return;
+                }
 
-        $this->session->set_userdata($token);
+                if($this->user_model->is_check($email) != 1) {
+                    $this->json(301, '이미 등록된 이메일주소입니다.');
+                    $this->_userSessionReset();
+                    return;
+                }
 
-        $this->result = array('code' => 200, 'message' => 'access_token이 발급되었습니다.');
-        $this->output->set_content_type('application/json')->set_output(json_encode($this->result));
+                // get user info
+                $user = $this->user_model->get_email($email);
+                if($password != $this->encrypt->decode($user->password)) {
+                    $this->json(302, '일치하는 정보가 존재하지 않습니다.');
+                    $this->_userSessionReset();
+                    return;
+                }
 
+                $user_session = array(
+                    'user_email'        => $row->email,
+                    'user_nick_name'    => $row->nick_name
+                );
+
+                $this->session->set_userdata($user_session);
+
+                $this->json(200, 'success');
+            }
+        }
     }
 
-    /*
-        Login 처리
-    */
-    public function login()
-    {
-        if(!is_array($this->input->post()) || sizeof($this->input->post()) == 0) {
-            redirect($this->config->item('API_URL') . '/error/message/500');
-        }
-
-
-        $email = $this->input->post('email');
-        $password = $this->input->post('password');
-
-        if(!isset($email) || empty($email)) {
-            $this->_userSessionReset();
-            redirect($this->config->item('API_URL') . '/error/message/500');
-        }
-
-        if(!isset($password) || empty($password)) {
-            $this->_userSessionReset();
-            redirect($this->config->item('API_URL') . '/error/message/500');
-        }
-
-        if($this->user_model->is_check($email) != 1) {
-            $this->_userSessionReset();
-            redirect($this->config->item('API_URL') . '/error/message/500');
-        }
-
-        $row = $this->user_model->get_email($email);
-        if($password != $this->encrypt->decode($row->password)) {
-            $this->_userSessionReset();
-            redirect($this->config->item('API_URL') . '/error/message/301');
-        }
-
-        if(empty($this->session->userdata('access_token')))
-            $access_token = random_string('alnum', 32);
-        else
-            $access_token = $this->session->userdata('access_token');
-
-        $user = array(
-            'user_email'        => $row->email,
-            'user_nick_name'    => $row->nick_name,
-            'access_token'      => $access_token  
-        );
-
-        $this->session->set_userdata($user);
-
-        $this->result = array('code' => 200, 'message' => 'success');
-        $this->output->set_content_type('application/json')->set_output(json_encode($this->result));
-    }
-
-    /*
-        로그아웃 처리
-    */
+    /**
+     * [logout description]
+     * @return [type] [description]
+     */
     public function logout()
     {
-        $array_items = array('user_email', 'user_nick_name', 'access_token');
+        $array_items = array('user_email', 'user_nick_name');
         $this->session->unset_userdata($array_items);
-
-        $this->result = array('code' => 200, 'message' => 'success');
-        $this->output->set_content_type('application/json')->set_output(json_encode($this->result));
+        $this->json(200, 'success');
     }
 
-    /*
-        access token 발급여부
-    */
-    public function getAuthorized()
-    {
-        if($this->session->userdata('access_token') && $this->session->userdata('user_email'))
-        { 
-            $this->result = array('code' => 200, 'message' => '서버 인증이 되어있습니다.');
-            $this->output->set_content_type('application/json')->set_output(json_encode($this->result));
-        } 
-        else
-        {
-            redirect($this->config->item('API_URL') . '/error/message/300');
-            return;
-        }
-    }
-
-    /*
-        user session 생성 여부
-    */
-    public function getLogined()
-    {
-        if($this->session->userdata('user_email'))
-        {
-            $this->result = array('code' => 200, 'message' => '로그인 되어있습니다.');
-            $this->output->set_content_type('application/json')->set_output(json_encode($this->result));
-        } 
-        else
-        {
-            $this->result = array('code' => 300, 'message' => '로그인이 필요합니다. ');
-            $this->output->set_content_type('application/json')->set_output(json_encode($this->result));
-        }
-    }
-
-    /*
-        user session 리셋
-    */
+    /**
+     * [_userSessionReset description]
+     * @return [type] [description]
+     */
     function _userSessionReset()
     {
         $array_items = array('user_email', 'user_nick_name');

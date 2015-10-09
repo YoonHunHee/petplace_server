@@ -1,9 +1,8 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Play extends CI_Controller {
+class Play extends API_Controller {
 
-    public $result;
     public $limit = 20;
 
     function __construct()
@@ -11,40 +10,42 @@ class Play extends CI_Controller {
         parent::__construct();
 
         $this->load->model('play_model');
+    }
 
-        if(empty($this->session->userdata('access_token')))
+    /**
+     * [lists description]
+     * @return [type] [description]
+     */
+    public function lists()
+    {
+        if($this->checkAccessToken())
         {
-            redirect($this->config->item('API_URL') . '/error/message/300');
+            $start = $this->input->get('start');
+
+            $where = 'id is not null';
+            $list = $this->play_model->lists($where, $start, $this->limit);
+            $this->json(200, 'success', $list);
         }
     }
 
-    /*
-
-    */
-    public function lists()
-    {
-        $start = $this->input->get('start');
-
-        $where = 'id is not null';
-        $list = $this->play_model->lists($where, $start, $this->limit);
-        $this->result = array('code' => 200, 'message' => 'success', 'lists' => $list);
-        $this->output->set_content_type('application/json')->set_output(json_encode($this->result));
-    }
-
-    /*
-    
-    */
     public function info($id = '')
     {
-        if(empty($id))
-            redirect($this->config->item('API_URL') . '/error/message/500');
+        if($this->checkAccessToken())
+        {
+            if(empty($id))
+            {
+                $this->json(500, '정상적인 접근이 아닙니다.');
+                return;
+            }    
 
-        $info = $this->play_model->get($id);
-        if(is_null($info))
-            redirect($this->config->item('API_URL') . '/error/message/500');
-        
-        
-        $this->result = array('code' => 200, 'message' => 'success', 'info' => $info);
-        $this->output->set_content_type('application/json')->set_output(json_encode($this->result));
+            $data = $this->play_model->get($id);
+            if(is_null($data))
+            {
+                $this->json(901, '죄송합니다 데이터를 불러올 수 없습니다.');
+                return;
+            }
+            
+            $this->json(200, 'success', $data);
+        }        
     }
 }

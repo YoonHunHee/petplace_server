@@ -8,6 +8,12 @@ class App extends API_Controller {
         parent::__construct();
     }
 
+    /**
+     * application auth - access_token publication
+     * @return json format
+     * [code]       result code
+     * [message]    result message
+     */
     public function auth()
     {
         if($this->checkPost())
@@ -29,6 +35,13 @@ class App extends API_Controller {
         }
     }
 
+    /**
+     * application & data version
+     * @return json format
+     * [code]       result code
+     * [message]    result message
+     * [data]       result data
+     */
     public function getVersion()
     {
         if($this->checkAccessToken())
@@ -46,6 +59,20 @@ class App extends API_Controller {
         }
     }
 
+    public function getSession()
+    {
+        $session = array(
+            'access_token'  => $this->session->userdata('access_token'),
+            'user_email'    => $this->session->userdata('user_email')
+        );
+        
+        $this->json(200, 'sucess', $session);
+    }
+
+    /**
+     * data download
+     * @return file
+     */
     public function getCurrentData()
     {
         if($this->checkAccessToken())

@@ -18,7 +18,7 @@ CREATE TABLE `tb_image` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
-CREATE TABLE `tb_place` (
+CREATE TABLE `tb_friends` (
   `id` bigint(11) unsigned NOT NULL AUTO_INCREMENT,
   `kind` varchar(20) NOT NULL DEFAULT '',
   `title` varchar(50) NOT NULL DEFAULT '',
@@ -38,7 +38,7 @@ CREATE TABLE `tb_place` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3968 DEFAULT CHARSET=utf8;
 
-CREATE TABLE `tb_course` (
+CREATE TABLE `tb_play` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `kind` varchar(20) NOT NULL DEFAULT 'course',
   `title` varchar(100) NOT NULL DEFAULT '',

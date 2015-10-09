@@ -14,7 +14,7 @@ class API_Controller extends CI_Controller {
 
     public function checkAccessToken() {
         if(empty($this->session->userdata('access_token'))) {
-            $this->json(300, 'access_token is null');
+            $this->json(300, '발급된 access_token이 존재하지 않습니다.');
             return false;
         }
 
@@ -23,7 +23,7 @@ class API_Controller extends CI_Controller {
 
     public function checkPost() {
         if(!is_array($this->input->post()) || sizeof($this->input->post()) == 0) {
-            $this->json(500, 'post parameter is null');
+            $this->json(500, '정상적인 접근이 아닙니다.');
             return false;
         }
 
