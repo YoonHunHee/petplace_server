@@ -28,6 +28,11 @@ class Play extends API_Controller {
         }
     }
 
+    /**
+     * [info description]
+     * @param  string $id [description]
+     * @return [type]     [description]
+     */
     public function info($id = '')
     {
         if($this->checkAccessToken())

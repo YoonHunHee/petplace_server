@@ -9,9 +9,12 @@ class User extends API_Controller {
 
         $this->load->model('user_model');
         $this->load->library('encrypt');
-
     }
 
+    /**
+     * [regist description]
+     * @return [type] [description]
+     */
     public function regist()
     {
         if($this->checkAccessToken())
