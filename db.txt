@@ -56,11 +56,17 @@ CREATE TABLE `tb_play` (
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
 
-
 CREATE TABLE `tb_version_history` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `version` varchar(20) NOT NULL DEFAULT '',
   `desc` varchar(250) DEFAULT '',
   `create_at` datetime NOT NULL,
   PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `tb_version` (
+  `data_update_at` datetime DEFAULT NULL,
+  `data_version` varchar(30) DEFAULT NULL,
+  `app_update_at` datetime DEFAULT NULL,
+  `app_version` varchar(30) DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
