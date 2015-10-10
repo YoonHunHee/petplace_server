@@ -187,4 +187,11 @@ class Friends extends Console_Controller {
 
 		return $latlan;
 	}
+
+	public function version()
+	{
+		$this->data['list'] = array();
+		$this->body = 'console/friends/version';
+		$this->layout();
+	}
 }

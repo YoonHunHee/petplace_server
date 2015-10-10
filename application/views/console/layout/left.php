@@ -43,6 +43,7 @@
                 <li><a><i class="fa fa-map-marker"></i> Friends <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu" style="display: none">
                         <li><a href="/console/friends/lists">Friends</a></li>
+                        <li><a href="/console/friends/version">Version</a></li>
                     </ul>
                 </li>
                 <li><a><i class="fa fa-map-marker"></i> Play <span class="fa fa-chevron-down"></span></a>

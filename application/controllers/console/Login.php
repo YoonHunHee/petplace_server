@@ -34,6 +34,11 @@ class Login extends CI_Controller {
     		$id = $this->input->post('console_id');
     		$pass = $this->input->post('console_pass');
     		$row = $this->admin_model->get($id);
+
+            if(is_null($row)) {
+                redirect('/console/login');
+            }
+
     		if($pass == $this->encrypt->decode($row->admin_pass))
     		{
     			$admin = array(

@@ -59,6 +59,26 @@
 
                 <a href="/console/friends/form" class="btn btn-success btn-sm">Add</a>
                 <a href="/console/friends/get_json" class="btn btn-success btn-sm">json</a>
+
+                <div>
+                    <table class="table table-striped responsive-utilities jambo_table bulk_action">
+                    <tr>
+                        <th>배포형</th>
+                        <td>
+                            <select>
+                                <option>major</option>
+                                <option>middle</option>
+                                <option>minor</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>현재버젼</th>
+                        <td>0.0.1 / 2015.10.08 updated.</td>
+                    </tr>
+                    </table>
+                    <a href="javascript:release_data();" class="btn btn-info btn-sm">데이터 배포</a>
+                </div>
             </form>
             </div>
         </div>
@@ -73,5 +93,10 @@ function go_del(id)
         f.id.value = id;
         f.submit();
     }
+}
+
+function release_data()
+{
+    if(confirm("정말로 배포하시겠습니까?"))
 }
 </script>

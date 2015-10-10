@@ -6,6 +6,8 @@ class App extends API_Controller {
     function __construct()
     {
         parent::__construct();
+
+        $this->load->model('version_model');
     }
 
     /**
@@ -16,8 +18,8 @@ class App extends API_Controller {
      */
     public function auth()
     {
-        if($this->checkPost())
-        {
+        // if($this->checkPost())
+        // {
             $this->load->helper('string');
 
             $secret_key = $this->input->post('secret_key');
@@ -32,7 +34,7 @@ class App extends API_Controller {
             $this->session->set_userdata($token);    
 
             $this->json(200, 'suucess');
-        }
+        // }
     }
 
     /**
@@ -42,12 +44,10 @@ class App extends API_Controller {
      * [message]    result message
      * [data]       result data
      */
-    public function getVersion()
+    public function version()
     {
         if($this->checkAccessToken())
         {
-            $this->load->model('version_model');
-
             $data = $this->version_model->get();
             $json;
             if(sizeof($data) > 0) {
@@ -59,25 +59,51 @@ class App extends API_Controller {
         }
     }
 
-    public function getSession()
+    /**
+     * [getSession description]
+     * @return [type] [description]
+     */
+    public function session()
     {
-        $session = array(
-            'access_token'  => $this->session->userdata('access_token'),
-            'user_email'    => $this->session->userdata('user_email')
-        );
-        
-        $this->json(200, 'sucess', $session);
+        // if($this->checkPost())
+        // {
+            
+            $secret_key = $this->input->post('secret_key');
+
+            //todo : secret key checked
+
+            $session = array(
+                'access_token'  => $this->session->userdata('access_token'),
+                'user_email'    => $this->session->userdata('user_email')
+            );
+
+            $this->json(200, 'sucess', $session);
+        }
     }
 
     /**
-     * data download
-     * @return file
+     * [getData description]
+     * @return [type] [description]
      */
-    public function getCurrentData()
+    public function data()
     {
         if($this->checkAccessToken())
         {
-            // json file retun
+            $this->load->helper('file');
+            // $this->load->helper('download');
+
+            //$version = $this->version_model->get();
+
+            $file = $_SERVER['DOCUMENT_ROOT'] . '/application/data/test_data.json';
+
+            $data = read_file($file);
+            if(empty($data))
+            {
+                return;
+            }
+
+            $this->json(200, 'success', $data);
+            //force_download('0.1.1.json', $data);
         }
     }
 

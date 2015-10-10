@@ -9,6 +9,7 @@ class Play extends API_Controller {
     {
         parent::__construct();
 
+        $this->load->model('user_model');
         $this->load->model('play_model');
     }
 
@@ -52,5 +53,52 @@ class Play extends API_Controller {
             
             $this->json(200, 'success', $data);
         }        
+    }
+
+    public function regist()
+    {
+        if($this->checkAccessToken())
+        {
+            // if($this->checkPost())
+            // {
+                $title = $this->input->post('title');
+                $desc = $this->input->post('desc');
+                $st_pt = $this->input->post('st_pt');
+                $end_pt = $this->input->post('end_pt');
+                $way_pt = $this->input->post('way_pt');
+                $distance = $this->input->post('distance');
+                $walk_time = $this->input->post('walk_time');
+
+                // check parameter
+                // if(!isset($title) || empty($title)) {
+                //     $this->json(501, '제목을 입력해주세요.');
+                //     return;
+                // }
+
+                // if(!isset($st_pt) || empty($st_pt)) {
+                //     $this->json(501, '시작지점 입력해주세요.');
+                //     return;
+                // }
+
+                $user = $this->user_model->get_email($this->session->userdata('user_email'));
+                print_r($user);
+
+                $insert['title'] = $title;
+                $insert['desc'] = $desc;
+                $insert['st_pt'] = $st_pt;
+                $insert['end_pt'] = $end_pt;
+                $insert['way_pt'] = 'GEOMETRYCOLLECTION('.$way_pt.')';
+                $insert['distance'] = $distance;
+                $insert['walk_time'] = $walk_time;
+
+
+                $insert['create_at'] = date('Y-m-d H:i:s', time());
+                $insert['create_id'] = $this->session->userdata('console_id');
+                $insert['update_at'] = date('Y-m-d H:i:s', time());
+                $insert['update_id'] = $this->session->userdata('console_id');
+
+
+            // }
+        }
     }
 }
