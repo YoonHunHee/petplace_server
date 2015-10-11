@@ -2,6 +2,7 @@
 class Version_model extends CI_Model {
 
     public $tableName = 'tb_version';
+    public $historyTableName = 'tb_version_history';
 
     public function __construct()
     {
@@ -17,5 +18,22 @@ class Version_model extends CI_Model {
             $row = $query->row(); 
             return $row;
         }
+    }
+
+    public function update($params)
+    {
+        return $this->db->update($this->tableName, $params); 
+    }
+
+    public function history() {
+
+        $this->db->order_by('id', 'desc');
+        $query = $this->db->get($this->historyTableName);
+        return $query->result_array();
+    }
+
+    public function history_insert($params) {
+
+        return $this->db->insert($this->historyTableName, $params);
     }
 }

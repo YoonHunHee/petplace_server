@@ -6,7 +6,7 @@
                 <div class="clearfix"></div>
             </div>
             <div class="x_content">
-            <form name="wform" method="post" action="/console/friends/del">
+            <form name="wform" method="post" action="/console/friends/updateVersion">
             <input type="hidden" name="id"/>
 
                 <table class="table table-striped responsive-utilities jambo_table bulk_action">
@@ -48,6 +48,8 @@
                         <option value="minor">minor</option>
                     </select>
 
+                    <input type="text" name="desc"/>
+
                     <a href="javascript:release_update();" class="btn btn-info btn-sm">VERSION UPDATE</a>
                     <br/>
                     # 테이블 변경/수정/삭제 또는 대량의 데이터 추가 후 배포시 major 업그레이드
@@ -63,7 +65,8 @@ function release_update()
 {
     if(confirm("VERSION UPDATE 하시겠습니까?"))
     {
-
+        var f = document.forms.wform;
+        f.submit();
     }
 }
 </script>

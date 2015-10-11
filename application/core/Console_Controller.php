@@ -24,4 +24,11 @@ class Console_Controller extends CI_Controller {
 			$this->template['body'] = $this->load->view($this->body, $this->data, true);
 		$this->load->view('console/layout/index', $this->template);
 	}
+
+    public function back($message) {
+
+        $data['message'] = $message;
+        $this->load->view('console/error', $data);
+
+    }
 }

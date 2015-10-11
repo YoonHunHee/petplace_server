@@ -11,6 +11,7 @@ class Friends extends Console_Controller {
 	{
 		parent::__construct();
 		$this->load->model('friends_model');
+		$this->load->model('version_model');
 		$this->load->library('form_validation');
 
 		$this->page_size = $this->config->item('default_page_size');
@@ -56,7 +57,6 @@ class Friends extends Console_Controller {
 		$data['friends'] = $rows->result_array();
 
 		force_download('friends.json', json_encode($data));
-		//$this->output->set_content_type('application/json')->set_output(json_encode($data));
 	}
 
 	public function action()
@@ -73,31 +73,32 @@ class Friends extends Console_Controller {
 		$this->form_validation->set_rules('id', '정상적인 접근이 아닙니다.', 'required');
 		
 		if($this->form_validation->run() === false)
-    {
-    	echo 'form error : ' . validation_errors(); 
-  	}
-  	else
-  	{
-  		$result = $this->friends_model->delete($this->input->post('id'));
+    	{
+    		echo 'form error : ' . validation_errors(); 
+	  	}
+	  	else
+	  	{
+	  		$result = $this->friends_model->delete($this->input->post('id'));
 
-  		if($result) {
-  			redirect('/console/friends/lists');
+	  		if($result) {
+	  			redirect('/console/friends/lists');
+	  		}
   		}
-  	}
 	}
 
 	function _regist()
 	{
 		$this->form_validation->set_rules('kind', '구분을 선택하세요', 'required');
-    $this->form_validation->set_rules('title', '제목을 입력하세요', 'required');
-    $this->form_validation->set_rules('addr', '주소를 입력하세요', 'required');
+    	$this->form_validation->set_rules('title', '제목을 입력하세요', 'required');
+    	$this->form_validation->set_rules('addr', '주소를 입력하세요', 'required');
 
-    if($this->form_validation->run() === false)
-    {
-    	echo 'form error : ' . validation_errors(); 
-  	}
-  	else
-  	{
+	    if($this->form_validation->run() === false)
+	    {
+	    	$this->back(validation_errors());
+	    	return;
+	  	}
+	  	else
+	  	{
 			$insert['kind'] = $this->input->post('kind');
 			$insert['title'] = $this->input->post('title');
 			$insert['tel'] = $this->input->post('tel');
@@ -115,11 +116,12 @@ class Friends extends Console_Controller {
 				$insert['lat'] = $temp[0];
 				$insert['lng'] = $temp[1];
 			}
-				
+			
 			$result = $this->friends_model->insert($insert);
 
-  		if($result)
-  			redirect('/console/friends/lists');
+	  		if($result) {
+	  			redirect('/console/friends/lists');
+	  		}
 		}
 	}
 
@@ -127,16 +129,17 @@ class Friends extends Console_Controller {
 	{
 		$this->form_validation->set_rules('id', '필수값이 존재하지 않습니다', 'required');
 		$this->form_validation->set_rules('kind', '구분을 선택하세요', 'required');
-	  $this->form_validation->set_rules('title', '제목을 입력하세요', 'required');
-	  $this->form_validation->set_rules('addr', '주소를 입력하세요', 'required');
+	  	$this->form_validation->set_rules('title', '제목을 입력하세요', 'required');
+	  	$this->form_validation->set_rules('addr', '주소를 입력하세요', 'required');
 
 		if($this->form_validation->run() === false)
-	  {
-	  	echo 'form error : ' . validation_errors(); 
+	  	{
+	  		$this->back(validation_errors());
+	    	return;
 		}
 		else
 		{
-	  	$update['kind'] = $this->input->post('kind');
+	  		$update['kind'] = $this->input->post('kind');
 			$update['title'] = $this->input->post('title');
 			$update['tel'] = $this->input->post('tel');
 			$update['addr'] = $this->input->post('addr');
@@ -151,38 +154,44 @@ class Friends extends Console_Controller {
 				$update['lat'] = $temp[0];
 				$update['lng'] = $temp[1];
 			}
+
 			$where = array('id'=>$this->input->post('id'));
 			$result = $this->friends_model->update($where, $update);
 
 			if($result) {
 				redirect('/console/friends/form/'.$this->input->post('id'));
 			}
-  	}
+  		}
 	}
 
-	function _addressTolatlng($addr = '') {
+	function _addressTolatlng($addr = '')
+	{
+		$latlan = '';
+		if(!empty($addr))
+		{
+			$api_url = sprintf("%s?apikey=%s&q=%s&output=xml", $this->daumApi, $this->daumKey, urlencode($addr));
+			$curl = curl_init($api_url);
+			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+			$curl_response = curl_exec($curl);
+			if ($curl_response === false) {
+			    $info = curl_getinfo($curl);
+			    curl_close($curl);
+			}
+			curl_close($curl);
 
-		$api_url = sprintf("%s?apikey=%s&q=%s&output=xml", $this->daumApi, $this->daumKey, urlencode($addr));
-		$curl = curl_init($api_url);
-		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-		$curl_response = curl_exec($curl);
-		if ($curl_response === false) {
-		    $info = curl_getinfo($curl);
-		    curl_close($curl);
-		}
-		curl_close($curl);
+			$xml = simplexml_load_string($curl_response);
+			$json = json_encode($xml);
 
-		$xml = simplexml_load_string($curl_response);
-		$json = json_encode($xml);
+			$json_array = json_decode($json, true);
+		 	
 
-		$json_array = json_decode($json, true);
-	 	$latlan = '';
-
-	 	if(isset($json_array['item'])) {
-		 	if($json_array['result'] > 1) {
-				$latlan = $json_array['item'][0]['lat'] . ',' . $json_array['item'][0]['lng'];
-			} else
-				$latlan = $json_array['item']['lat'] . ',' . $json_array['item']['lng'];
+		 	if(isset($json_array['item']))
+		 	{
+			 	if($json_array['result'] > 1)
+					$latlan = $json_array['item'][0]['lat'] . ',' . $json_array['item'][0]['lng'];
+				else
+					$latlan = $json_array['item']['lat'] . ',' . $json_array['item']['lng'];
+			}
 		}
 
 		return $latlan;
@@ -190,8 +199,41 @@ class Friends extends Console_Controller {
 
 	public function version()
 	{
-		$this->data['list'] = array();
+		$this->data['list'] = $this->version_model->history();
 		$this->body = 'console/friends/version';
 		$this->layout();
+	}
+
+	public function updateVersion()
+	{
+		$update_type = $this->input->post('update_type');
+		$desc = $this->input->post('desc');
+
+		$new_version_num = '';
+		$version = $this->version_model->get();
+		if(is_null($version))
+			$new_version_num = '0.1';
+
+		// version update
+		$update['data_version'] = $newVersion;
+		$update['data_update_at'] = date('Y-m-d H:i:s', time());
+		$update_result = $this->version_model->update($update);
+
+		// if($update_result)
+		// {
+		// 	// history insert
+		// 	$insert['version'] = $newVersion;
+		// 	$insert['desc'] = '';
+		// 	$insert['create_at'] = date('Y-m-d H:i:s', time());
+		// 	$result = $this->version_model->history_insert($insert);
+
+		// 	if($result) {
+		// 		redirect('/console/friends/version');
+		// 	}
+		// }
+		// else
+		// {
+		// 	echo 'error';
+		// }
 	}
 }

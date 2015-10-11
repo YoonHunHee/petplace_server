@@ -11,6 +11,11 @@ class Gather extends CI_Controller {
 	public $daumApi = $this->config->item('daum_api');
 	public $daumKey = $this->config->item('daum_key');
 
+	public function getHospitalData()
+	{
+		
+	}
+
 	public function local_hostipal($query = '충청북도동물병원')
 	{
 		$count = 1;
