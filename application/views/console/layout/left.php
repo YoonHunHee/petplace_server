@@ -46,7 +46,7 @@
                         <li><a href="/console/friends/version">Version</a></li>
                     </ul>
                 </li>
-                <li><a><i class="fa fa-map-marker"></i> Play <span class="fa fa-chevron-down"></span></a>
+                <li><a><i class="fa fa-play-circle"></i> Play <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu" style="display: none">
                         <li><a href="/console/play/lists">Play</a></li>
                     </ul>
@@ -57,6 +57,11 @@
                         </li>
                         <li><a href="/tables_dynamic.html">Table Dynamic</a>
                         </li>
+                    </ul>
+                </li>
+                <li><a><i class="fa fa-book"></i> 건의사항 <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu" style="display: none">
+                        <li><a href="/console/request/lists">건의사항</a></li>
                     </ul>
                 </li>
                 <li><a><i class="fa fa-bar-chart-o"></i> Analysis <span class="fa fa-chevron-down"></span></a>

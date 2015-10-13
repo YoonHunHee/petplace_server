@@ -15,9 +15,9 @@ class Request extends Console_Controller {
     public function lists($start = 0)
     {
         $where = 'id is not null';
-        $total_count = $this->friends_model->total_count($where);
+        $total_count = $this->request_model->total_count($where);
 
-        $this->data['list'] = $this->friends_model->lists($where, $start, $this->page_size);
+        $this->data['list'] = $this->request_model->lists($where, $start, $this->page_size);
 
         $config['base_url'] = '/console/request/lists';
         $config['total_rows'] = $total_count;
@@ -34,7 +34,7 @@ class Request extends Console_Controller {
         $this->load->helper('form');
 
         if(!empty($id)) {
-            $row = $this->friends_model->get($id);
+            $row = $this->request_model->get($id);
             $this->data['row'] = $row;
         }
 
@@ -52,7 +52,7 @@ class Request extends Console_Controller {
         }
         else
         {
-            $result = $this->friends_model->delete($this->input->post('id'));
+            $result = $this->request_model->delete($this->input->post('id'));
 
             if($result) {
                 redirect('/console/request/lists');

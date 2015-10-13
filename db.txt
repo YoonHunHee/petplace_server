@@ -81,3 +81,38 @@ CREATE TABLE `tb_user` (
   `update_at` datetime NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE `tb_request` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `title` varchar(150) NOT NULL DEFAULT '',
+  `email` varchar(250) DEFAULT '',
+  `contents` text,
+  `create_id` int(11) DEFAULT NULL,
+  `create_at` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE `tb_story` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `contents` text,
+  `file_ids` varchar(25) DEFAULT NULL,
+  `read_count` int(11) NOT NULL DEFAULT '0',
+  `create_at` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE `tb_file` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `file_name` varchar(150) DEFAULT '',
+  `file_thumbnail_name` varchar(150) DEFAULT '',
+  `file_real_name` varchar(150) DEFAULT '',
+  `file_real_path` varchar(250) DEFAULT '',
+  `create_at` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
