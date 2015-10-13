@@ -8,11 +8,41 @@ class Gather extends CI_Controller {
 	public $key = '41c3947d6a5d36f4451e2d9311d6eff5';
 	public $mapKey = '29c5ee8706475ddafdb53c782403e193';
 
-	public $daumApi = $this->config->item('daum_api');
-	public $daumKey = $this->config->item('daum_key');
+	// public $daumApi = $this->config->item('daum_api');
+	// public $daumKey = $this->config->item('daum_key');
 
 	public function getHospitalData()
 	{
+		//공공데이터에서 병원정보 가져오기
+		//$max_page_num = 487;
+		$data_service_key = "NrVltQjv93FImgBDKOVnlsQbRolTL8oZEJT9KDXsam2t2mk6S5GDflyIJ6YSXN60WXWiCK6M6yi8Zc0mGAPNSw%3D%3D";
+		$data_api_url = sprintf("http://api.data.go.kr/openapi/2a10bf31-d326-4023-a8c9-ed3e52869723?serviceKey=%s&s_list=10&type=json&s_page=%d",$data_service_key, 0);
+
+		$ch = curl_init();
+
+		// Configuring curl options
+		$options = array(
+			CURLOPT_RETURNTRANSFER => true,
+			CURLOPT_USERAGENT => 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.5) Gecko/20041107 Firefox/1.0',
+			//CURLOPT_HTTPHEADER => array('Content-type: application/json'),
+			CURLOPT_URL => $data_api_url
+		);
+
+		curl_setopt_array($ch, $options);
+		$result = curl_exec($ch);
+
+		echo $result . '<br/>//<br/>';
+
+		// $ch = curl_init();
+		// curl_setopt($ch, CURLOPT_URL, $data_api_url); 
+		// curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		// //curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.5) Gecko/20041107 Firefox/1.0');
+		// $data = curl_exec($ch); 
+		// curl_close($ch);
+		
+
+		$json_array = json_decode($result, true);
+		print_r($json_array);
 		
 	}
 

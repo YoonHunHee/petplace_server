@@ -16,25 +16,31 @@ class App extends API_Controller {
      * [code]       result code
      * [message]    result message
      */
-    public function auth()
+    public function authorize()
     {
-        // if($this->checkPost())
-        // {
+        if($this->checkPost())
+        {
             $this->load->helper('string');
 
             $secret_key = $this->input->post('secret_key');
 
             //todo : secret key checked
+            if($secret_key == 'withme.access.auth')
+            {
+                //access token generated
+                $access_token = random_string('alnum', 32);
 
-            //access token generated
-            $access_token = random_string('alnum', 32);
+                //access token session created
+                $token = array('access_token' => $access_token);
+                $this->session->set_userdata($token);    
 
-            //access token session created
-            $token = array('access_token' => $access_token);
-            $this->session->set_userdata($token);    
-
-            $this->json(200, 'suucess');
-        // }
+                $this->json(200, 'suucess');
+            }
+            else
+            {
+                $this->json(300, 'secret_key가 일치하지 않습니다.');
+            }
+        }
     }
 
     /**

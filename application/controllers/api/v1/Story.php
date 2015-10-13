@@ -10,4 +10,19 @@ class Story extends API_Controller {
         parent::__construct();
 
     }
+
+    public function lists()
+    {
+
+    }
+
+    public function info($id = '')
+    {
+
+    }
+
+    public function regist()
+    {
+        
+    }
 }
